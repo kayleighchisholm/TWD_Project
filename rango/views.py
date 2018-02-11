@@ -25,8 +25,10 @@ def index(request):
     return render(request, 'rango/index.html', context=context_dict)
 
 def about (request):
-    context_dict = {'rangosays': "Rango says this is the about page!"}
-    return render(request, 'rango/about.html', context=context_dict)
+    return HttpResponse('Rango says: Here is the about page. page. <a href="/rango/">Index</a>')
+    print(request.method)
+    print(request.user)
+    return render(request, 'rango/about.html', {})
 
 def show_category(request, category_name_slug):
 
@@ -67,17 +69,12 @@ def add_category(request):
         if form.is_valid():
             # Save the new category to the database.
             category = form.save(commit=True)
-            # Now that the category is saved
-            # We could give a confirmation message
-            # But since the most recent category added is on the index page
-            # Then we can direct the user back to the index page.
+
             return index(request)
         else:
-            # The supplied form contained errors -
-            # just print them to the terminal.
+
             print(form.errors)
 
-    # Will handle the bad form, new form, or no form supplied cases.
     # Render the form with error messages (if any).
     return render(request, 'rango/add_category.html', {'form': form})
 
