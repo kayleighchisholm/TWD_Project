@@ -77,19 +77,15 @@ def show_category(request, category_name_slug):
 def add_category(request):
     form = CategoryForm()
 
-    # A HTTP POST?
     if request.method == 'POST':
         form = CategoryForm(request.POST)
 
-        # Have we been provided with a valid form?
         if form.is_valid():
             form.save(commit=True)
             return index(request)
         else:
-
             print(form.errors)
 
-    # Render the form with error messages (if any).
     return render(request, 'rango/add_category.html', {'form': form})
 
 @login_required
@@ -108,12 +104,11 @@ def add_page(request, category_name_slug):
                 page.category = category
                 page.views = 0
                 page.save()
-                return show_category(request, category_name_slug)
+            return show_category(request, category_name_slug)
         else:
             print(form.errors)
 
     context_dict = {'form':form, 'category': category}
-
     return render(request, 'rango/add_page.html', context_dict)
 
 
